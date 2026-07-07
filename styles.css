@@ -205,23 +205,61 @@ button:hover {
 
 .saved-item {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 4px 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
   text-align: left;
   padding: 12px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #f6f3eb;
+  width: 100%;
 }
 
-.saved-item strong,
-.saved-item span {
+.saved-item-details {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.saved-item-details strong,
+.saved-item-details span,
+.saved-item-score {
   overflow-wrap: anywhere;
 }
 
-.saved-item span {
+.saved-item-details strong {
+  color: #f6f3eb;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.saved-item-details span {
   color: rgba(246, 243, 235, 0.72);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.saved-item-score {
+  max-width: 94px;
+  padding: 6px 8px;
+  border: 1px solid rgba(135, 217, 201, 0.28);
+  border-radius: 999px;
+  background: rgba(135, 217, 201, 0.1);
+  color: #d9fff7;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.empty-state {
+  margin: 0;
+  padding: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: rgba(246, 243, 235, 0.68);
   font-size: 13px;
 }
 

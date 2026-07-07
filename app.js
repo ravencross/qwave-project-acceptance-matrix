@@ -529,16 +529,21 @@ function renderSaved() {
     .forEach((evaluation) => {
       const result = evaluate(evaluation);
       const button = document.createElement("button");
+      const details = document.createElement("span");
       const title = document.createElement("strong");
       const client = document.createElement("span");
       const score = document.createElement("span");
+      const scoreValue = result.total.toFixed(result.total % 1 === 0 ? 0 : 1);
 
       button.type = "button";
       button.className = "saved-item";
+      details.className = "saved-item-details";
       title.textContent = evaluation.projectName || "Untitled project";
       client.textContent = evaluation.clientName || "No client";
-      score.textContent = `${result.status} ${result.total.toFixed(result.total % 1 === 0 ? 0 : 1)}/${maxWeightedScore}`;
-      button.append(title, score, client);
+      score.className = "saved-item-score";
+      score.textContent = `${result.status} ${scoreValue}/${maxWeightedScore}`;
+      details.append(title, client);
+      button.append(details, score);
       button.addEventListener("click", () => writeEvaluation(evaluation));
       savedList.appendChild(button);
     });
