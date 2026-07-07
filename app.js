@@ -169,6 +169,7 @@ const scoreMeter = document.querySelector("#scoreMeter");
 const decisionCard = document.querySelector("#decisionCard");
 const decisionReason = document.querySelector("#decisionReason");
 const savedList = document.querySelector("#savedList");
+const clearSavedButton = document.querySelector("#clearSavedButton");
 let activeId = null;
 
 function createId() {
@@ -514,6 +515,7 @@ function updateDecision() {
 function renderSaved() {
   const saved = getSaved();
   savedList.innerHTML = "";
+  clearSavedButton.disabled = saved.length === 0;
 
   if (saved.length === 0) {
     const empty = document.createElement("p");
@@ -529,19 +531,29 @@ function renderSaved() {
     .forEach((evaluation) => {
       const result = evaluate(evaluation);
       const button = document.createElement("button");
+      const details = document.createElement("span");
       const title = document.createElement("strong");
       const client = document.createElement("span");
       const score = document.createElement("span");
+      const scoreValue = result.total.toFixed(result.total % 1 === 0 ? 0 : 1);
 
       button.type = "button";
       button.className = "saved-item";
+      details.className = "saved-item-details";
       title.textContent = evaluation.projectName || "Untitled project";
       client.textContent = evaluation.clientName || "No client";
-      score.textContent = `${result.status} ${result.total.toFixed(result.total % 1 === 0 ? 0 : 1)}/${maxWeightedScore}`;
-      button.append(title, score, client);
+      score.className = "saved-item-score";
+      score.textContent = `${result.status} ${scoreValue}/${maxWeightedScore}`;
+      details.append(title, client);
+      button.append(details, score);
       button.addEventListener("click", () => writeEvaluation(evaluation));
       savedList.appendChild(button);
     });
+}
+
+function clearSaved() {
+  setSaved([]);
+  renderSaved();
 }
 
 function saveCurrent() {
@@ -632,6 +644,7 @@ form.addEventListener("input", updateDecision);
 form.addEventListener("change", updateDecision);
 document.querySelector("#saveButton").addEventListener("click", saveCurrent);
 document.querySelector("#newProjectButton").addEventListener("click", newEvaluation);
+clearSavedButton.addEventListener("click", clearSaved);
 document.querySelector("#sampleButton").addEventListener("click", () => writeEvaluation(sampleEvaluation));
 document.querySelector("#exportButton").addEventListener("click", exportJson);
 document.querySelector("#shareButton").addEventListener("click", () => {
