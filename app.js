@@ -599,6 +599,29 @@ function exportJson() {
   URL.revokeObjectURL(url);
 }
 
+async function shareApp() {
+  const shareUrl = window.location.origin.includes("localhost")
+    ? "https://qwave-scorecard-vercel.vercel.app"
+    : window.location.href;
+  const shareData = {
+    title: "QWave Project Acceptance Matrix",
+    text: "Use this scorecard to evaluate QWave project fit.",
+    url: shareUrl
+  };
+  const button = document.querySelector("#shareButton");
+
+  if (navigator.share) {
+    await navigator.share(shareData);
+    return;
+  }
+
+  await navigator.clipboard.writeText(shareUrl);
+  button.textContent = "Copied";
+  window.setTimeout(() => {
+    button.textContent = "Share";
+  }, 1500);
+}
+
 renderGates();
 renderCriteria();
 renderDealbreakers();
@@ -611,4 +634,6 @@ document.querySelector("#saveButton").addEventListener("click", saveCurrent);
 document.querySelector("#newProjectButton").addEventListener("click", newEvaluation);
 document.querySelector("#sampleButton").addEventListener("click", () => writeEvaluation(sampleEvaluation));
 document.querySelector("#exportButton").addEventListener("click", exportJson);
-document.querySelector("#printButton").addEventListener("click", () => window.print());
+document.querySelector("#shareButton").addEventListener("click", () => {
+  shareApp().catch(() => {});
+});
