@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QWave Project Acceptance Matrix</title>
+    <meta name="theme-color" content="#182326" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Saved evaluations">
+        <div class="brand-block">
+          <div class="logo-lockup" aria-label="QWave">
+            <img src="./qwave-logo-white.png" alt="" />
+            <span>QWave</span>
+          </div>
+          <h1>Project Acceptance Matrix</h1>
+        </div>
+
+        <div class="decision-card" id="decisionCard">
+          <div>
+            <span class="decision-label">Recommendation</span>
+            <strong id="recommendation">Discuss</strong>
+          </div>
+          <div class="score-ring" aria-label="Total score">
+            <span id="scoreTotal">0</span>
+            <small id="scoreMax">/81.25</small>
+          </div>
+        </div>
+
+        <div class="meter" aria-hidden="true">
+          <span id="scoreMeter"></span>
+        </div>
+
+        <section class="saved-panel">
+          <div class="panel-title-row">
+            <h2>Saved</h2>
+            <button class="icon-button" id="newProjectButton" type="button" title="New evaluation" aria-label="New evaluation">+</button>
+          </div>
+          <div class="saved-list" id="savedList"></div>
+        </section>
+
+        <div class="sidebar-actions">
+          <button id="sampleButton" type="button">Load Sample</button>
+          <button id="exportButton" type="button">Export JSON</button>
+          <button id="printButton" type="button">Print</button>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Intake</p>
+            <h2>Score the project before the team says yes.</h2>
+          </div>
+          <button class="primary-action" id="saveButton" type="button">Save Evaluation</button>
+        </header>
+
+        <form id="scorecardForm">
+          <section class="section-band">
+            <div class="snapshot-panel">
+              <div class="snapshot-heading">
+                <div>
+                  <p class="eyebrow">Project intake</p>
+                  <h3>Project Snapshot</h3>
+                </div>
+                <span>Start here</span>
+              </div>
+              <div class="form-grid snapshot-grid">
+                <label>
+                  <span>Project name</span>
+                  <input id="projectName" name="projectName" type="text" placeholder="Inventory Automation Platform" />
+                </label>
+                <label>
+                  <span>Client / business</span>
+                  <input id="clientName" name="clientName" type="text" placeholder="Regional Specialty Distributor" />
+                </label>
+                <label class="wide">
+                  <span>Description</span>
+                  <textarea id="description" name="description" rows="3" placeholder="What are they trying to build or improve?"></textarea>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-band">
+            <div class="section-heading">
+              <h3>Hard Gates</h3>
+            </div>
+            <div class="gate-grid" id="gateGrid"></div>
+          </section>
+
+          <section class="section-band">
+            <div class="section-heading">
+              <h3>Weighted Score</h3>
+            </div>
+            <div class="criteria-grid" id="criteriaGrid"></div>
+          </section>
+
+          <section class="section-band">
+            <div class="dealbreaker-panel">
+              <div class="dealbreaker-heading">
+                <div>
+                  <p class="eyebrow">Risk screen</p>
+                  <h3>Dealbreakers</h3>
+                </div>
+                <span>Any one can block</span>
+              </div>
+              <div class="dealbreaker-grid" id="dealbreakerGrid"></div>
+            </div>
+          </section>
+
+          <section class="section-band notes-layout">
+            <div class="notes-card">
+              <label>
+                <span>Decision notes</span>
+                <textarea id="notes" name="notes" rows="6" placeholder="Clarify budget, owner, JV terms, handoff model, and adoption risks."></textarea>
+              </label>
+            </div>
+            <div class="summary-card">
+              <div class="summary-heading">
+                <h3>Decision Logic</h3>
+                <span>Weighted /81.25</span>
+              </div>
+              <p id="decisionReason">Score the criteria to generate a recommendation.</p>
+              <dl class="logic-list">
+                <div class="logic-row logic-accept">
+                  <dt>Accept</dt>
+                  <dd>
+                    <strong>65+</strong>
+                    <span>Gates pass and confidence holds.</span>
+                  </dd>
+                </div>
+                <div class="logic-row logic-conditions">
+                  <dt>Conditions</dt>
+                  <dd>
+                    <strong>57-64.9</strong>
+                    <span>Good fit, but terms or proof need tightening.</span>
+                  </dd>
+                </div>
+                <div class="logic-row logic-reframe">
+                  <dt>Reframe</dt>
+                  <dd>
+                    <strong>47-56.9</strong>
+                    <span>Promising upside, wrong current shape.</span>
+                  </dd>
+                </div>
+                <div class="logic-row logic-decline">
+                  <dt>Decline</dt>
+                  <dd>
+                    <strong>&lt;47</strong>
+                    <span>Weak fit, failed gate, or active dealbreaker.</span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section class="section-band">
+            <div class="review-panel">
+              <div class="review-heading">
+                <h3>Post-Project Review</h3>
+              </div>
+              <div class="review-grid">
+                <label>
+                  <span>Was the original decision right?</span>
+                <select id="reviewDecision" name="reviewDecision">
+                  <option value="">Not reviewed</option>
+                  <option value="yes">Yes</option>
+                  <option value="partly">Partly</option>
+                  <option value="no">No</option>
+                </select>
+              </label>
+                <label>
+                  <span>Would QWave accept this again?</span>
+                <select id="reviewRepeat" name="reviewRepeat">
+                  <option value="">Not reviewed</option>
+                  <option value="yes">Yes</option>
+                  <option value="with-changes">Only with changes</option>
+                  <option value="no">No</option>
+                </select>
+              </label>
+                <label>
+                  <span>Did QWave end up running the tech?</span>
+                <select id="reviewRanTech" name="reviewRanTech">
+                  <option value="">Not reviewed</option>
+                  <option value="no">No</option>
+                  <option value="partly">Partly</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </label>
+                <label>
+                  <span>Did the project create leverage?</span>
+                <select id="reviewLeverage" name="reviewLeverage">
+                  <option value="">Not reviewed</option>
+                  <option value="yes">Yes</option>
+                  <option value="some">Some</option>
+                  <option value="no">No</option>
+                </select>
+              </label>
+                <label class="wide">
+                  <span>Review notes</span>
+                  <textarea id="reviewNotes" name="reviewNotes" rows="4" placeholder="What should this teach QWave about the next similar project?"></textarea>
+                </label>
+              </div>
+            </div>
+          </section>
+        </form>
+      </section>
+    </main>
+
+    <template id="gateTemplate">
+      <article class="gate">
+        <div class="gate-copy">
+          <h4></h4>
+          <p></p>
+        </div>
+        <select></select>
+      </article>
+    </template>
+
+    <template id="criterionTemplate">
+      <article class="criterion">
+        <div class="criterion-copy">
+          <div>
+            <h4></h4>
+            <p></p>
+          </div>
+          <span class="weight-pill"></span>
+        </div>
+        <div class="score-control">
+          <output></output>
+          <input type="range" min="1" max="5" step="1" />
+        </div>
+        <div class="score-anchors">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="evidence-row">
+          <label>
+            <span>Confidence</span>
+            <select class="confidence-select">
+              <option value="high">High</option>
+              <option value="medium" selected>Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </label>
+          <label>
+            <span>Evidence</span>
+            <input class="evidence-input" type="text" placeholder="What proves this score?" />
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <template id="dealbreakerTemplate">
+      <label class="dealbreaker">
+        <input type="checkbox" />
+        <span></span>
+      </label>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
